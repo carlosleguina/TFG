@@ -1,0 +1,6 @@
+pyautogui
+streamlit
+transformers
+numpy
+tqdm
+torch
