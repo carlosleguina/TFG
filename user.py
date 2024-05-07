@@ -2,7 +2,7 @@
 from datetime import date
 import os
 import csv 
-PATH = "Data/resultados_formularios.csv"
+PATH = "C:\Users\User\OneDrive - Universidad Politécnica de Madrid\Matemáticas e Informática\Cuarto año\Segundo Cuatrimestre\Trabajo de Fin de Grado\app\Data\resultados_formularios.csv"
 AVAILABLE_FIELDS = ["ASPECTO", "OLOR", "TEXTURA", "SABOR", "COLOR", "DUREZA", "DULZOR"]
 
 class User:
