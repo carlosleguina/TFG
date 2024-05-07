@@ -3,7 +3,6 @@ import streamlit as st
 from back import Bot
 from back import embedding
 
-
 def main():
 
     if 'bot' not in st.session_state:
@@ -22,14 +21,15 @@ def main():
     if 'end' not in st.session_state.keys():
         st.session_state['end'] = False
 
-    placeholder = st.empty()  # Crear un placeholder para el contenido futuro
-
+    placeholder = st.empty()
     if st.session_state['end']:
-            st.write("<h1 style='text-align: center;'>¡Muchas gracias por rellenar el Formulario!</h1>", unsafe_allow_html=True) 
+            
+        
+            placeholder.write("<h1 style='text-align: center;'>¡Muchas gracias por rellenar el Formulario!</h1>", unsafe_allow_html=True) 
     else:
-
-        st.markdown("<h1 style='text-align: center;'>IncluSens: Cookie Chatbot</h1>", unsafe_allow_html=True)
-        st.markdown("""
+          # Crear un placeholder para el contenido futuro
+        placeholder.markdown("""
+        <h1 style='text-align: center;'>IncluSens: Cookie Chatbot</h1>
         <p style='text-align: justify; font-size: 20px;margin-bottom: 0px;'>Prueba la galleta y danos tu opinión sobre ella de la manera más detallada posible. Puedes probar la galleta tanto como necesites. Si necesitas más galletas pídelas al responsable de cata.</p>
         <p style='text-align: justify; font-size: 20px;margin-bottom: 0px;'>Te recordamos que es importante que escribas todo lo que pienses sobre la galleta:</p>
         <p style='text-align: justify; font-size: 20px;margin-bottom: 0px; margin-left: 40px;'>- Si te gusta o no</p>
@@ -63,29 +63,32 @@ def main():
                         chatbot.user.set_field(chatbot.get_last_field(), st.session_state['last_prompt'])
                         print("Guardando formulario...")
                         chatbot.user.save_user()
-
-            for message in chatbot.get_conversation_history():
-                with st.chat_message(message["role"]):
-                    st.write(message["content"])
-            if(st.session_state['end'] == False and ('consumer_code' in st.session_state.keys() and 'cookie_code' in st.session_state.keys())):
-                if chatbot.get_conversation_history()[-1]["role"] != "assistant": 
-                    if 'primera_opinion' not in st.session_state.keys():
-                        print("USUARIO VA A DAR SU PRIMERA OPINIÓN...")
-                        response = chatbot.ask()
-                        st.session_state['primera_opinion'] = False
-                    else:
-                        similarity = embedding.cosine_similarity(embedding.get_embedding(st.session_state['last_prompt']), embedding.get_embedding(chatbot.get_last_field()))
-                        if similarity < 0.25:
-                            response = chatbot.re_ask()
-                        else:
-                            print("Guardando datos...")
-                            chatbot.user.set_field(chatbot.get_last_field(), st.session_state['last_prompt'])
+                        st.session_state['end'] = True
+            if st.session_state['end'] == False:
+                for message in chatbot.get_conversation_history():
+                    with st.chat_message(message["role"]):
+                        st.write(message["content"])
+                if(st.session_state['end'] == False and ('consumer_code' in st.session_state.keys() and 'cookie_code' in st.session_state.keys())):
+                    if chatbot.get_conversation_history()[-1]["role"] != "assistant": 
+                        if 'primera_opinion' not in st.session_state.keys():
+                            print("USUARIO VA A DAR SU PRIMERA OPINIÓN...")
                             response = chatbot.ask()
+                            st.session_state['primera_opinion'] = False
+                        else:
+                            similarity = embedding.cosine_similarity(embedding.get_embedding(st.session_state['last_prompt']), embedding.get_embedding(chatbot.get_last_field()))
+                            if similarity < 0.25:
+                                response = chatbot.re_ask()
+                            else:
+                                print("Guardando datos...")
+                                chatbot.user.set_field(chatbot.get_last_field(), st.session_state['last_prompt'])
+                                response = chatbot.ask()
 
-                    with st.chat_message("assistant"):
-                        with st.spinner("Thinking..."):
-                            st.write(response)    
-                            chatbot.add_conversation(role="assistant", content=response) # Add response to message history
+                        with st.chat_message("assistant"):
+                            with st.spinner("Thinking..."):
+                                st.write(response)    
+                                chatbot.add_conversation(role="assistant", content=response) # Add response to message history
+            else:
+                placeholder.write("<h1 style='text-align: center;'>¡Muchas gracias por rellenar el Formulario!</h1>", unsafe_allow_html=True) 
 
 if __name__ == "__main__":
     main()   
