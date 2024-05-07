@@ -13,8 +13,8 @@ DESCRIPTION_FIELDS = ["Aspecto: apariencia visual. Esto puede incluir caracterí
                       "Color: Sensación producida por los rayos luminosos que impresionan los órganos visuales y que depende de la longitud de onda. Usado también como femenino",
                       "Dureza: Cualidad de duro.",
                       "Dulzor: percepción de sabor dulce que se experimenta al comerla. Este sabor dulce generalmente proviene de los azúcares o edulcorantes utilizados en la receta de la galleta."]
-EMBEDDINGS_TABLE_PATH = "C:/Users/User/OneDrive - Universidad Politécnica de Madrid/Matemáticas e Informática/Cuarto año/Segundo Cuatrimestre/Trabajo de Fin de Grado/Código/Data/tabla_de_categorias.csv"
-DATA_PATH = "C:/Users/User/OneDrive - Universidad Politécnica de Madrid/Matemáticas e Informática/Cuarto año/Segundo Cuatrimestre/Trabajo de Fin de Grado/Código/Data/"
+EMBEDDINGS_TABLE_PATH = "Data/tabla_de_categorias.csv"
+DATA_PATH = "Data/"
 
 def save_embeddings(df, embeddings_col, file_path):
         # Asegurarse de que la columna de embeddings existe
