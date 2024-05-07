@@ -2,7 +2,8 @@
 FROM python:3.10-slim
 
 # Set the working directory in the container
-WORKDIR /streamlit
+RUN rm rm -rf /app/*
+WORKDIR /app
 
 # Install any needed packages specified in requirements.txt
 RUN apt-get update && apt-get install -y \
