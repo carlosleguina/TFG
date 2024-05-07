@@ -23,8 +23,6 @@ def main():
 
     placeholder = st.empty()
     if st.session_state['end']:
-            
-        
             placeholder.write("<h1 style='text-align: center;'>¡Muchas gracias por rellenar el Formulario!</h1>", unsafe_allow_html=True) 
     else:
           # Crear un placeholder para el contenido futuro
