@@ -2,7 +2,7 @@ import streamlit as st
 
 from back import Bot
 from back import embedding
-import pyautogui
+
 
 def main():
 
@@ -63,7 +63,6 @@ def main():
                         chatbot.user.set_field(chatbot.get_last_field(), st.session_state['last_prompt'])
                         print("Guardando formulario...")
                         chatbot.user.save_user()
-                        pyautogui.hotkey(" ","Enter")
 
             for message in chatbot.get_conversation_history():
                 with st.chat_message(message["role"]):

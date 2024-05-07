@@ -1,4 +1,3 @@
-pyautogui
 streamlit
 transformers
 numpy

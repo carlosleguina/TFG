@@ -1,28 +1,35 @@
 # Use an official Python runtime as a parent image
-FROM python:3.10-slim
+FROM ubuntu:latest
 
 # Set the working directory in the container
-RUN rm rm -rf /app/*
-WORKDIR /app
+WORKDIR /usr/app/src
 
-# Install any needed packages specified in requirements.txt
-RUN apt-get update && apt-get install -y \
-    build-essential \
-    curl \
-    software-properties-common \
-    git \
-    && rm -rf /var/lib/apt/lists/*
-    
+ARG LANG= 'en_us.UTF-8'
+
+# Install system dependencies
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        apt-utils \
+        locales \
+        python3-pip \
+        python3-venv \
+        python3-yaml \
+        rsyslog systemd systemd-cron sudo \
+        xvfb \
+        x11-xserver-utils \
+        x11-apps \
+    && apt-get clean
+
+# Create a virtual environment and install dependencies
+RUN python3 -m venv venv
+# Activate the virtual environment and upgrade pip
+RUN . venv/bin/activate && pip install --upgrade pip
+
 RUN git clone https://github.com/carlosleguina/TFG.git .
-# Make port 8501 available to the world outside this container
 
-RUN pip install --upgrade pip
+RUN . venv/bin/activate && pip install -r requirements.txt
 
-RUN pip install -r requirements.txt
 
-EXPOSE 8501
 
-HEALTHCHECK CMD curl --fail http://localhost:8501/_stcore/health
-
-# Run main.py when the container launches
-ENTRYPOINT ["streamlit", "run", "main.py", "--server.port=8501", "--server.address=0.0.0.0"]
+# Set the default command to run the app using Streamlit and Xvfb
+CMD ["/usr/app/src/venv/bin/streamlit", "run", "main.py"]
